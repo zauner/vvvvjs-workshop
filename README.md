@@ -1,2 +1,3 @@
-# vvvvjs-workshop
-Lessons for Node15 VVVV.js Workshop
+# Node15 VVVV.js Workshop
+
+Hello!
