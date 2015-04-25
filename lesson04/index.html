@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lesson 1 / VVVV.js Workshop</title>
+  <style>
+    body{background-color:#E0E0E0;font-family: Verdana, sans-serif}
+    #main-container{width:1000px; margin-left:auto; margin-right:auto}
+    #header-graphics{width:1000px; height: 300px; border-top:1px solid #AAA; border-bottom: 1px solid #AAA}
+    #title{font-size:22px;font-weight:bold}
+    #content{font-size:14px}
+  </style>
+  
+  <script language="JavaScript" src="../vvvv_js/lib/jquery/jquery-1.8.2.min.js"></script>
+  <script language="JavaScript" src="../vvvv_js/vvvv.js"></script>
+  <link rel="Stylesheet" href="../vvvv_js/vvvviewer/vvvv.css"/>
+  <script language="JavaScript">
+    $(document).ready(function() {
+      VVVV.init("../vvvv_js", "full", function() {
+        console.log('VVVV.js ready.');
+      });
+    });
+  </script>
+  <link rel="VVVV" href="mypatch.v4p"/>
+  
+</head>
+</html>
+<body>
+
+<div id="main-container">
+  <div id="title">Bananas Inc.</div>
+  <div id="header-graphics"></div>
+  <div id="content">
+    <h2>The future is now.</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi finibus urna id nunc porta ornare. Etiam eleifend eros ut neque efficitur, eget pretium leo condimentum. Cras bibendum neque at libero tempus gravida. Morbi interdum nisl sem, condimentum facilisis augue cursus eget. Donec porttitor suscipit felis eget consectetur. Nunc euismod lectus id ligula eleifend varius. Praesent eget quam maximus, aliquet lorem ut, auctor felis. Proin lacinia arcu pulvinar facilisis ornare. Curabitur et quam at urna viverra cursus. Donec nec ullamcorper tellus. Donec convallis odio et aliquet auctor. In in felis faucibus, vulputate ipsum id, tempus ligula. Vestibulum rutrum est sit amet dictum aliquam. Integer ultrices nunc id pulvinar accumsan. Praesent pharetra molestie tempor. Etiam lorem nunc, mattis ac nulla sit amet, varius luctus est.</p>
+    <p>Ut egestas sollicitudin odio, ac cursus lorem dapibus et. Duis risus dolor, pharetra nec molestie vitae, consequat eu massa. Vivamus vitae mi sed arcu rhoncus finibus. Quisque vehicula sodales varius. Nunc dui enim, semper quis molestie id, vehicula luctus arcu. Nulla augue urna, aliquet in pharetra sed, fermentum sed sem. Donec nec diam at ligula congue posuere eget lobortis nisi.</p>
+  </div>
+</div>
+
+</body>
+</html>
