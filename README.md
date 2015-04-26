@@ -49,7 +49,13 @@ Typical header graphics example: given a simple website with some lorem ipsum an
 
 ## Lesson 5 - HTML/CSS/Event Nodes
 
-David, bitteschön
+A prepared Canvas graphics patch should be extended by the participants by adding HTML elements to control the graphics.
+
+* use GetElement (HTML) to get the #controls div
+* add a headline to the #controls div using the Element (HTML) node, and style it somehow
+* add a spreaded Element (HTML) node for the labels
+* add a RangeSlider (HTML) node and append it below the spreaded node
+* add a GetValue (HTML) node to get the range slider values
 
 ## Lesson 6 - Loading Remote Data
 
