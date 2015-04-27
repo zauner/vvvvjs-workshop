@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Lesson 2+3 / VVVV.js Workshop</title>
+  <title>Lesson 5 / VVVV.js Workshop</title>
   <style>
     body{background-color:#E0E0E0;font-family: Verdana, sans-serif}
+    #main-container{width:1000px; margin-left:auto; margin-right:auto}
+    #rendering{float:left;width:512px}
+    #controls{margin-left:530px;border:1px solid #AAA;width:512px}
   </style>
   
   <script language="JavaScript" src="../vvvv_js/lib/jquery/jquery-1.8.2.min.js"></script>
@@ -22,7 +25,10 @@
 </html>
 <body>
 
-VVVV.js is loaded, you can launch the editor by appending <pre>#edit/mypatch.v4p</pre> to the URL.
+<div id="main-container">
+  <div id="rendering"></div>
+  <div id="controls"></div>
+</div>
 
 </body>
 </html>
