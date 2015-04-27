@@ -1,0 +1,265 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta28.1.dtd" >
+  <PATCH>
+  <BOUNDS type="Window" width="16110" height="17685">
+  </BOUNDS>
+  <NODE id="23" nodename="HTTP (Network Get)" systemname="HTTP (Network Get)" componentmode="Hidden">
+  <BOUNDS type="Node" left="1200" top="840" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="URL" visible="1">
+  </PIN>
+  <PIN pinname="Name" visible="1">
+  </PIN>
+  <PIN pinname="Value" visible="1">
+  </PIN>
+  <PIN pinname="Refresh" visible="1" values="|0|">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="24" nodename="XPath (XML)" systemname="XPath (XML)" componentmode="Hidden">
+  <BOUNDS type="Node" left="855" top="2100" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="XML Input" visible="1">
+  </PIN>
+  <PIN pinname="XPath Query" visible="1">
+  </PIN>
+  <PIN pinname="Base Element" visible="1">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="25" nodename="IOBox (String)" systemname="IOBox (String)" componentmode="InABox">
+  <BOUNDS type="Box" left="1125" top="1680" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="SliceOffset" visible="1">
+  </PIN>
+  <PIN pinname="Input String" visible="1" values="|/xml/folder/@folders|">
+  </PIN>
+  <PIN pinname="Rows" visible="0" values="|1|">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="26" nodename="XPath (XML)" systemname="XPath (XML)" componentmode="Hidden">
+  <BOUNDS type="Node" left="4425" top="1785" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="XML Input" visible="1">
+  </PIN>
+  <PIN pinname="XPath Query" visible="1">
+  </PIN>
+  <PIN pinname="Base Element" visible="1">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="27" nodename="IOBox (String)" systemname="IOBox (String)" componentmode="InABox">
+  <BOUNDS type="Box" left="4455" top="1260" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="SliceOffset" visible="1">
+  </PIN>
+  <PIN pinname="Input String" visible="1" values="|/xml/folder/img/@Filenames|">
+  </PIN>
+  <PIN pinname="Rows" visible="0" values="|1|">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="30" nodename="IOBox (String)" systemname="IOBox (String)" componentmode="InABox">
+  <BOUNDS type="Box" left="135" top="2655" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="SliceOffset" visible="1">
+  </PIN>
+  <PIN pinname="Input String" visible="1">
+  </PIN>
+  <PIN pinname="Rows" visible="0" values="|1|">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="|Folder|">
+  </PIN>
+  </NODE>
+  <NODE id="33" nodename="IOBox (String)" systemname="IOBox (String)" componentmode="InABox">
+  <BOUNDS type="Box" left="1170" top="210" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="SliceOffset" visible="1">
+  </PIN>
+  <PIN pinname="Input String" visible="1" values="|data.txt|">
+  </PIN>
+  <PIN pinname="Rows" visible="0" values="|1|">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="|Filename|">
+  </PIN>
+  </NODE>
+  <NODE id="34" nodename="ScreenInfo (Windows)" systemname="ScreenInfo (Windows)" componentmode="Hidden">
+  <BOUNDS type="Node" left="1080" top="13740" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="35" nodename="Vector (2d Split)" systemname="Vector (2d Split)" componentmode="Hidden">
+  <BOUNDS type="Node" left="885" top="14775" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="XY" visible="1">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="36" nodename="Scale (Transform)" systemname="Scale (Transform)" componentmode="Hidden">
+  <BOUNDS type="Node" left="1485" top="15465" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Transform In" visible="1">
+  </PIN>
+  <PIN pinname="X" visible="1">
+  </PIN>
+  <PIN pinname="Y" visible="1" values="|1|">
+  </PIN>
+  <PIN pinname="Z" visible="1" values="|1|">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="37" nodename="Divide (Value)" systemname="Divide (Value)" componentmode="Hidden">
+  <BOUNDS type="Node" left="1875" top="15045" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Input" visible="1">
+  </PIN>
+  <PIN pinname="Input 2" visible="1">
+  </PIN>
+  <PIN pinname="Inputs Count" visible="0" values="|2|">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="134" nodename="Count (String)" systemname="Count (String)" componentmode="Hidden">
+  <BOUNDS type="Node" left="3300" top="2760" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Input" visible="1">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="172" nodename="Renderer (Canvas VVVVjs)" systemname="Renderer (Canvas VVVVjs)" componentmode="Hidden">
+  <BOUNDS type="Node" left="465" top="16185" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Layers" visible="1">
+  </PIN>
+  <PIN pinname="Clear" visible="1">
+  </PIN>
+  <PIN pinname="Background Color" visible="1">
+  </PIN>
+  <PIN pinname="Backbuffer Width" visible="1">
+  </PIN>
+  <PIN pinname="Backbuffer Height" visible="1">
+  </PIN>
+  <PIN pinname="View" visible="1">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="|#RendererMain|">
+  </PIN>
+  </NODE>
+  <NODE id="174" nodename="RGB (Color Join)" systemname="RGB (Color Join)" componentmode="Hidden">
+  <BOUNDS type="Node" left="600" top="15480" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Red" visible="1">
+  </PIN>
+  <PIN pinname="Green" visible="1">
+  </PIN>
+  <PIN pinname="Blue" visible="1">
+  </PIN>
+  <PIN pinname="Alpha" visible="1">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="177" nodename="Text (Canvas VVVVjs)" systemname="Text (Canvas VVVVjs)" componentmode="Hidden">
+  <BOUNDS type="Node" left="450" top="12510" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Render State" visible="1">
+  </PIN>
+  <PIN pinname="Transform" visible="1">
+  </PIN>
+  <PIN pinname="Clipping Layer" visible="1">
+  </PIN>
+  <PIN pinname="Text" visible="1" values="|Loading ...|">
+  </PIN>
+  <PIN pinname="Font" visible="1">
+  </PIN>
+  <PIN pinname="Align" visible="1">
+  </PIN>
+  <PIN pinname="Baseline" visible="1">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="178" nodename="Toggle (Animation)" systemname="Toggle (Animation)" componentmode="Hidden">
+  <BOUNDS type="Node" left="165" top="6420" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Input" visible="1">
+  </PIN>
+  <PIN pinname="Reset" visible="1" values="|1|">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="179" nodename="Switch (Node Input)" systemname="Switch (Node Input)" componentmode="Hidden">
+  <BOUNDS type="Node" left="210" top="13875" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Switch" visible="1">
+  </PIN>
+  <PIN pinname="Input 1" visible="1">
+  </PIN>
+  <PIN pinname="Input 2" visible="1">
+  </PIN>
+  <PIN pinname="Input Count" visible="0" values="|2|">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="194" nodename="XPath (XML)" systemname="XPath (XML)" componentmode="Hidden">
+  <BOUNDS type="Node" left="5265" top="1860" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="XML Input" visible="1">
+  </PIN>
+  <PIN pinname="XPath Query" visible="1">
+  </PIN>
+  <PIN pinname="Base Element" visible="1">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <LINK srcnodeid="33" srcpinname="Output String" dstnodeid="23" dstpinname="URL">
+  </LINK>
+  <LINK srcnodeid="23" srcpinname="Body" dstnodeid="24" dstpinname="XML Input">
+  </LINK>
+  <LINK srcnodeid="25" srcpinname="Output String" dstnodeid="24" dstpinname="XPath Query">
+  </LINK>
+  <LINK srcnodeid="23" srcpinname="Body" dstnodeid="26" dstpinname="XML Input">
+  </LINK>
+  <LINK srcnodeid="27" srcpinname="Output String" dstnodeid="26" dstpinname="XPath Query">
+  </LINK>
+  <LINK srcnodeid="24" srcpinname="Output" dstnodeid="30" dstpinname="Input String">
+  </LINK>
+  <LINK srcnodeid="35" srcpinname="X" dstnodeid="37" dstpinname="Input 2">
+  </LINK>
+  <LINK srcnodeid="35" srcpinname="Y" dstnodeid="37" dstpinname="Input">
+  </LINK>
+  <LINK srcnodeid="37" srcpinname="Output" dstnodeid="36" dstpinname="X">
+  </LINK>
+  <LINK srcnodeid="26" srcpinname="Output" dstnodeid="134" dstpinname="Input">
+  </LINK>
+  <LINK srcnodeid="36" srcpinname="Transform Out" dstnodeid="172" dstpinname="View">
+  </LINK>
+  <LINK srcnodeid="35" srcpinname="Y" dstnodeid="172" dstpinname="Backbuffer Height">
+  </LINK>
+  <LINK srcnodeid="35" srcpinname="X" dstnodeid="172" dstpinname="Backbuffer Width">
+  </LINK>
+  <LINK srcnodeid="174" srcpinname="Output" dstnodeid="172" dstpinname="Background Color">
+  </LINK>
+  <LINK srcnodeid="23" srcpinname="Success" dstnodeid="178" dstpinname="Input">
+  </LINK>
+  <LINK srcnodeid="177" srcpinname="Layer" dstnodeid="179" dstpinname="Input 1">
+  </LINK>
+  <LINK srcnodeid="179" srcpinname="Output" dstnodeid="172" dstpinname="Layers">
+  </LINK>
+  <LINK srcnodeid="178" srcpinname="Output" dstnodeid="179" dstpinname="Switch">
+  </LINK>
+  <LINK srcnodeid="34" srcpinname="ResolutionXY" dstnodeid="35" dstpinname="XY">
+  </LINK>
+  </PATCH>

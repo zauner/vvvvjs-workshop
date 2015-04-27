@@ -1,0 +1,853 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta28.1.dtd" >
+  <PATCH>
+  <BOUNDS type="Window" width="12405" height="35745">
+  </BOUNDS>
+  <NODE id="76" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)" componentmode="Hidden">
+  <BOUNDS type="Node" left="2295" top="2010" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Resolution X" visible="1">
+  </PIN>
+  <PIN pinname="Resolution Y" visible="1">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="81" nodename="LFO (Animation)" systemname="LFO (Animation)" componentmode="Hidden">
+  <BOUNDS type="Node" left="7290" top="2235" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Period" visible="1" values="|1.7999999999999998|">
+  </PIN>
+  <PIN pinname="Pause" visible="1">
+  </PIN>
+  <PIN pinname="Reverse" visible="1">
+  </PIN>
+  <PIN pinname="Reset" visible="1">
+  </PIN>
+  <PIN pinname="Phase" visible="1">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="87" nodename="Add (Value)" systemname="Add (Value)" componentmode="Hidden">
+  <BOUNDS type="Node" left="7500" top="2745" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Input 1" visible="1">
+  </PIN>
+  <PIN pinname="Input 2" visible="1">
+  </PIN>
+  <PIN pinname="Input Count" visible="0" values="|2|">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="90" nodename="DefineEffect (DX9)" systemname="DefineEffect (DX9)" componentmode="Hidden">
+  <BOUNDS type="Node" left="3120" top="3915" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Effect Descriptor" visible="1" values="|Electronics|">
+  </PIN>
+  <PIN pinname="Source Code" visible="0" values="|#ifdef GL_ES
+precision highp float;
+#endif
+
+uniform mat4 tW : WORLD;
+uniform mat4 tV : VIEW;
+uniform mat4 tP : PROJECTION;
+
+
+uniform vec4 Color : COLOR = {1.0, 1.0, 1.0, 1.0};
+uniform sampler2D Texture;
+uniform mat4 Texture_Transform;
+uniform float Alpha = 1.0;
+
+
+uniform vec3 iResolution;           // viewport resolution (in pixels)
+uniform float iGlobalTime;           // shader playback time (in seconds)
+uniform float iChannelTime[4];       // channel playback time (in seconds)
+uniform vec3 iChannelResolution[4]; // channel resolution (in pixels)
+uniform vec4 iMouse;                // mouse pixel coords. xy: current (if MLB down), zw: click
+uniform sampler2D iChannel0;          // input channel. XX = 2D/Cube
+uniform sampler2D iChannel1;          // input channel. XX = 2D/Cube
+uniform vec4 iDate;                 // (year, month
+
+varying vec2 vs2psTexCd;
+
+vertex_shader:
+
+attribute vec3 PosO : POSITION;
+attribute vec2 TexCd : TEXCOORD0;
+
+void main(void) {
+  gl_Position = tP * tV * tW * vec4(PosO, 1.0);
+  vs2psTexCd = (Texture_Transform * vec4(TexCd, 0, 1)).xy;
+}
+
+
+fragment_shader:
+
+// by srtuss, 2013
+// was trying to find some sort of &quot;mechanical&quot; fractal for texture/heightmap
+// generation, but then i ended up with this.
+
+// rotate position around axis
+vec2 rotate(vec2 p, float a)
+{
+	return vec2(p.x * cos(a) - p.y * sin(a), p.x * sin(a) + p.y * cos(a));
+}
+
+// 1D random numbers
+float rand(float n)
+{
+    return fract(sin(n) * 43758.5453123);
+}
+
+// 2D random numbers
+vec2 rand2(in vec2 p)
+{
+	return fract(vec2(sin(p.x * 591.32 + p.y * 154.077), cos(p.x * 391.32 + p.y * 49.077)));
+}
+
+// 1D noise
+float noise1(float p)
+{
+	float fl = floor(p);
+	float fc = fract(p);
+	return mix(rand(fl), rand(fl + 1.0), fc);
+}
+
+// voronoi distance noise, based on iq's articles
+float voronoi(in vec2 x)
+{
+	vec2 p = floor(x);
+	vec2 f = fract(x);
+	
+	vec2 res = vec2(8.0);
+	for(int j = -1; j <= 1; j ++)
+	{
+		for(int i = -1; i <= 1; i ++)
+		{
+			vec2 b = vec2(i, j);
+			vec2 r = vec2(b) - f + rand2(p + b);
+			
+			// chebyshev distance, one of many ways to do this
+			float d = max(abs(r.x), abs(r.y));
+			
+			if(d < res.x)
+			{
+				res.y = res.x;
+				res.x = d;
+			}
+			else if(d < res.y)
+			{
+				res.y = d;
+			}
+		}
+	}
+	return res.y - res.x;
+}
+
+
+float flicker = noise1(iGlobalTime * 2.0) * 0.8 + 0.4;
+
+void main(void)
+{
+	vec2 uv = gl_FragCoord.xy / iResolution.xy;
+	uv = (uv - 0.5) * 2.0;
+	vec2 suv = uv;
+	uv.x *= iResolution.x / iResolution.y;
+	
+	
+	float v = 0.0;
+	
+	// that looks highly interesting:
+	//v = 1.0 - length(uv) * 1.3;
+	
+	
+	// a bit of camera movement
+	uv *= 0.6 + sin(iGlobalTime * 0.1) * 0.4;
+	uv = rotate(uv, sin(iGlobalTime * 0.3) * 1.0);
+	uv += iGlobalTime * 0.4;
+	
+	
+	// add some noise octaves
+	float a = 0.6, f = 1.0;
+	
+	for(int i = 0; i < 3; i ++) // 4 octaves also look nice, its getting a bit slow though
+	{	
+		float v1 = voronoi(uv * f + 5.0);
+		float v2 = 0.0;
+		
+		// make the moving electrons-effect for higher octaves
+		if(i > 0)
+		{
+			// of course everything based on voronoi
+			v2 = voronoi(uv * f * 0.5 + 50.0 + iGlobalTime);
+			
+			float va = 0.0, vb = 0.0;
+			va = 1.0 - smoothstep(0.0, 0.1, v1);
+			vb = 1.0 - smoothstep(0.0, 0.08, v2);
+			v += a * pow(va * (0.5 + vb), 2.0);
+		}
+		
+		// make sharp edges
+		v1 = 1.0 - smoothstep(0.0, 0.3, v1);
+		
+		// noise is used as intensity map
+		v2 = a * (noise1(v1 * 5.5 + 0.1));
+		
+		// octave 0's intensity changes a bit
+		if(i == 0)
+			v += v2 * flicker;
+		else
+			v += v2;
+		
+		f *= 3.0;
+		a *= 0.7;
+	}
+
+	// slight vignetting
+	v *= exp(-0.6 * length(suv)) * 1.2;
+	
+	// use texture channel0 for color? why not.
+	vec3 cexp = texture2D(iChannel0, uv * 0.001).xyz * 3.0 + texture2D(iChannel0, uv * 0.01).xyz;//vec3(1.0, 2.0, 4.0);
+	cexp *= 1.4;
+	
+	// old blueish color set
+	//vec3 cexp = vec3(6.0, 4.0, 2.0);
+	
+	vec3 col = vec3(pow(v, cexp.x), pow(v, cexp.y), pow(v, cexp.z)) * 2.0;
+	
+	gl_FragColor = vec4(col, 1.0);
+}|">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="91" nodename="Electronics (EX9.Effect)" systemname="Electronics (EX9.Effect)" filename="./Electronics.fx" componentmode="Hidden">
+  <BOUNDS type="Node" left="2130" top="3375" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Render State" visible="1">
+  </PIN>
+  <PIN pinname="Mesh" visible="1">
+  </PIN>
+  <PIN pinname="Transform" visible="1">
+  </PIN>
+  <PIN pinname="Technique" visible="1">
+  </PIN>
+  <PIN pinname="Color" visible="1">
+  </PIN>
+  <PIN pinname="Texture" visible="1">
+  </PIN>
+  <PIN pinname="Texture Transform" visible="1">
+  </PIN>
+  <PIN pinname="Alpha" visible="1">
+  </PIN>
+  <PIN pinname="iResolution" visible="1">
+  </PIN>
+  <PIN pinname="iGlobalTime" visible="1">
+  </PIN>
+  <PIN pinname="iMouse" visible="1">
+  </PIN>
+  <PIN pinname="iChannel0" visible="1">
+  </PIN>
+  <PIN pinname="iChannel1" visible="1">
+  </PIN>
+  <PIN pinname="iDate" visible="1">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="92" nodename="Scale (Transform)" systemname="Scale (Transform)" componentmode="Hidden">
+  <BOUNDS type="Node" left="2490" top="2850" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Transform In" visible="1">
+  </PIN>
+  <PIN pinname="X" visible="1">
+  </PIN>
+  <PIN pinname="Y" visible="1">
+  </PIN>
+  <PIN pinname="Z" visible="1">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="93" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)" componentmode="InABox">
+  <BOUNDS type="Box" left="2895" top="2535" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Y Input Value" visible="1" values="|2|">
+  </PIN>
+  <PIN pinname="Rows" visible="0" values="|1|">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="281" nodename="DefineEffect (DX9)" systemname="DefineEffect (DX9)" componentmode="Hidden">
+  <BOUNDS type="Node" left="6465" top="3870" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Effect Descriptor" visible="1" values="|PlanetSystem|">
+  </PIN>
+  <PIN pinname="Source Code" visible="0" values="|#ifdef GL_ES
+precision highp float;
+#endif
+
+uniform mat4 tW : WORLD;
+uniform mat4 tV : VIEW;
+uniform mat4 tP : PROJECTION;
+
+
+uniform vec4 Color : COLOR = {1.0, 1.0, 1.0, 1.0};
+uniform sampler2D Texture;
+uniform mat4 Texture_Transform;
+uniform float Alpha = 1.0;
+
+
+uniform vec3 iResolution;           // viewport resolution (in pixels)
+uniform float iGlobalTime;           // shader playback time (in seconds)
+uniform float iChannelTime[4];       // channel playback time (in seconds)
+uniform vec3 iChannelResolution[4]; // channel resolution (in pixels)
+uniform vec4 iMouse;                // mouse pixel coords. xy: current (if MLB down), zw: click
+uniform sampler2D iChannel0;          // input channel. XX = 2D/Cube
+uniform sampler2D iChannel1;          // input channel. XX = 2D/Cube
+uniform vec4 iDate;                 // (year, month
+
+varying vec2 vs2psTexCd;
+
+vertex_shader:
+
+attribute vec3 PosO : POSITION;
+attribute vec2 TexCd : TEXCOORD0;
+
+void main(void) {
+  gl_Position = tP * tV * tW * vec4(PosO, 1.0);
+  vs2psTexCd = (Texture_Transform * vec4(TexCd, 0, 1)).xy;
+}
+
+
+fragment_shader:
+
+// &quot;Planet K&quot; by Kali
+
+const float Saturation= .9;
+const float ColorDensity= 1.4;
+const float ColorOffset= 0.1;
+const vec3 Color1= vec3(1.,0.9,0.8);
+const vec3 Color2= vec3(1.0,0.85,0.65)*.5;
+const vec3 Color3= vec3(1.0,0.8,.7)*.4;
+
+#define PI  3.141592
+
+const vec3 lightdir=-vec3(0.0,0.0,1.0);
+
+float colindex;
+
+// Fragmentarium's rotation matrix
+mat3 rotmat(vec3 v, float angle)
+{
+	float c = cos(angle);
+	float s = sin(angle);
+	
+	return mat3(c + (1.0 - c) * v.x * v.x, (1.0 - c) * v.x * v.y - s * v.z, (1.0 - c) * v.x * v.z + s * v.y,
+		(1.0 - c) * v.x * v.y + s * v.z, c + (1.0 - c) * v.y * v.y, (1.0 - c) * v.y * v.z - s * v.x,
+		(1.0 - c) * v.x * v.z - s * v.y, (1.0 - c) * v.y * v.z + s * v.x, c + (1.0 - c) * v.z * v.z
+		);
+}
+
+// Random number implementation found at: lumina.sourceforge.net/Tutorials/Noise.html
+float rand(vec2 co){
+	return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
+
+// Formulas used for texture, coloring and stars
+// more info here:
+// http://www.fractalforums.com/new-theories-and-research/very-simple-formula-for-fractal-patterns/
+
+float KalisetTexture(vec3 p) {
+	vec3 pos=p;
+	float l=1.;
+	float ln=0.;
+	float lnprev=0.;
+	float expsmooth=0.;
+	for (int i=0; i<11; i++) { //13 increment
+		p.xyz=abs(p.xyz);
+		p=p/dot(p,p);
+		p=p*2.-vec3(1.);
+		if (mod(float(i),2.)>0.) {
+			lnprev=ln;
+			ln=length(p);
+			expsmooth+=exp(-1./abs(lnprev-ln));
+		}
+	}
+	return expsmooth;
+}
+
+float KalisetStars(vec3 p) {
+	vec3 pos=p;
+	float l=1.;
+	float ln=0.;
+	float lnprev=0.;
+	float expsmooth=0.;
+	p+=vec3(1.35,1.54,1.23);
+	p*=.3;
+	for (int i=0; i<17; i++) {    //18 increment
+		p.xyz=abs(p.xyz);
+		p=p/dot(p,p);
+		p=p*1.-vec3(.9);
+	}
+	return pow(length(p),1.5)*.04;
+}
+
+
+// Distance estimation for sphere with texture displacement
+float dsph (in vec4 sph, in vec3 p)
+{
+	//p*=rotmat(normalize(vec3(0.,1.,0.)),iGlobalTime*.05);
+	vec3 p2=p-sph.xyz;
+	float d=length(p2)-sph.w;
+	float tex=KalisetTexture(p2*.4+vec3(.14,.31,.51));
+	colindex=tex;
+	return d+tex*.006+.25;
+}
+
+// Intersection with sphere
+float isph (in vec4 sph, in vec3 p, in vec3 rd)
+{
+	float t=999.,tnow,b,disc;
+    vec3 sd=sph.xyz-p;    
+    b = dot ( rd,sd );
+    disc = b*b + (sph.w*sph.w) - dot ( sd,sd );
+    if (disc>0.0) t = b - sqrt(disc);
+	return t;
+}
+
+// Finite difference normal
+vec3 normal(vec4 sph, vec3 p) {
+	vec3 e = vec3(0.0,0.01,0.0);
+	
+	return normalize(vec3(
+			dsph(sph,p+e.yxx)-dsph(sph,p-e.yxx),
+			dsph(sph,p+e.xyx)-dsph(sph,p-e.xyx),
+			dsph(sph,p+e.xxy)-dsph(sph,p-e.xxy)
+			)
+		);	
+}
+
+// AO
+float AO(in vec4 sph, in vec3 p, in vec3 n) {
+	float ao = 0.0;
+	float de = dsph(sph,p);
+	float wSum = 0.0;
+	float w = 1.0;
+    float d = 1.0;
+	float aodetail=.02;
+	for (float i =1.0; i <1.0; i++) {
+		float D = (dsph(sph,p+ d*n*i*i*aodetail) -de)/(d*i*i*aodetail);
+		w *= 0.6;
+		ao += w*clamp(1.0-D,0.0,1.0);
+		wSum += w;
+	}
+	return clamp(.9*ao/wSum, 0.0, 1.0);
+}
+
+// Shadows
+float shadow(in vec4 sph, in vec3 p) 
+{
+	vec3 ldir=-normalize(lightdir);
+	float totdist=0.; 
+        float detail=0.01;
+	float sh=1.;
+	for (int i=0; i<3; i++){;   
+		float d=dsph(sph,p+totdist*ldir);
+		if (d<detail) {sh=0.;continue;}
+		if (totdist>sph.w) {sh=1.;continue;}
+		totdist+=d*.5;	
+	}
+	return clamp(sh,0.,1.);
+}
+
+
+// Get gradient from 3-color palette using a coloring index 
+vec3 getcolor(float index) {
+	float cx=index*ColorDensity+ColorOffset*PI*3.;
+	vec3 col;
+	float ps=PI/1.5;
+	float f1=max(0.,sin(cx));
+	float f2=max(0.,sin(cx+ps));
+	float f3=max(0.,sin(cx+ps*2.));
+	col=mix(Color1,Color2,f1);
+	col=mix(col,mix(Color3,Color1,f3),f2);
+	col=mix(vec3(length(col)),col,Saturation);
+	return col;
+}
+
+// Ligthing - diffusse+specular+ambient
+vec3 light(in vec4 sph, in vec3 p, in vec3 dir) {
+	vec3 ldir=normalize(lightdir);
+	vec3 n=normal(sph,p);
+	float sh=shadow(sph,p);
+	float diff=max(0.,dot(ldir,-n))*sh+.12;
+	diff*=(1.-AO(sph,p,n));
+	vec3 r = reflect(ldir,n);
+	float spec=max(0.,dot(dir,-r))*sh;
+	return vec3(diff*.7+pow(spec,6.)*0.6);	
+		}
+
+// Raymarching inside the planet's atmosphere :)
+vec3 march(in vec4 sph, in vec3 from, in vec3 dir) 
+{
+	float totdist=0.;
+        float detail=0.02;  
+	vec3 col, p;
+	float d;
+	for (int i=0; i<17; i++) {  
+	 p=from+totdist*dir;
+	 d=dsph(sph,p)*.8;  //init4
+	 if (d<detail) break;
+         if (totdist>sph.w) break;
+	 totdist+=d; 
+	}
+	vec3 back=vec3(1.)*0.5;
+	if (d<detail) {
+		float cindex=colindex;
+		col=getcolor(cindex)*light(sph, p-detail*dir*10., dir); 
+	} else { 
+		col=vec3(0.);
+	}
+	return col;
+}
+
+// Main code
+void main(void)
+{
+	vec2 mouse=iMouse.xy/iResolution.xy-vec2(.5);
+	mat3 camrot1;
+	mat3 camrot2;
+	float ang=iGlobalTime*.12;
+	camrot1=rotmat(vec3(0.,1.,0.),1.+mouse.x*PI*1.5+ang);
+	camrot2=rotmat(vec3(1.,0.,0.),1.-mouse.y*PI*1.5);
+	mat3 camrot=camrot1*camrot2; // camera rotation
+	vec2 uv = gl_FragCoord.xy / iResolution.xy;
+	uv=uv*2.-1.;
+	uv.y*=iResolution.y/iResolution.x;
+	vec3 from=vec3(0.,0.,-8.)*camrot;
+	vec3 dir=normalize(vec3(uv*.7,1.))*camrot;
+	vec3 col=vec3(0.);
+	vec4 sph=vec4(0.,0.,0.,2.8); // sphere position and size 
+								 // (I leave the coordinate part for future use)
+	float t=isph(sph,from,dir); // intersect with sphere
+	if (t<999.) {;
+		col=march(sph,from+t*dir,dir); // raymarch a bit from there for the texture
+		}
+	float dirlen=length(dir.xy);
+	vec3 suncol=vec3(1.,.9,.85)*(sign(dir.z)+1.)*.5; //I used sign to eliminate the twin sun
+	float occult=min(pow(max(0.,length(from.xy)-sph.w*.92),0.6),.6); // light occulting factor
+	float sundisc=-sign(dirlen-.02); // plain sun disc
+	float sunbody=pow(smoothstep(.1+occult*.1,0.,dirlen),3.)*1.3; // outside glow
+	float rayrad=pow(max(0.,1.-dirlen),4.); // rays length
+	float sunrays=0.;
+	vec3 rdir=dir*rotmat(vec3(0.,0.,1.),-length(from.xy)*.3);
+	for (float s=0.; s<2.; s++){ // get the rays, randomize a bit init step 3
+		mat3 rayrot=rotmat(vec3(0.,0.,1.),PI/6.+rand(vec2((s+1.)*5.2165485))*.1);
+		sunrays+=pow(max(0.,1.-abs(rdir.x)*2.-abs(rdir.y)*.05),100.)
+			    *pow(rayrad,.2+rand(vec2((s+1.)*12.215685))*1.5)*.4;
+		rdir*=rayrot;
+		sunrays+=pow(max(0.,1.-abs(rdir.x)*3.-abs(rdir.y)*.05),150.)
+			    *pow(rayrad,.5+rand(vec2((s+1.)*46.243685))*5.)*.3;
+		rdir*=rayrot;
+	}
+	if (col==vec3(0.)) {// hit nothing
+		col+=vec3(max(0.,.5*KalisetStars(dir*10.)))*max(0.,1.-sunbody*2.5); //stars
+		col+=vec3(.95,.93,1.)*exp(-38.*pow(length(uv),3.5))*3.7 //atmosphere backlight glow
+			*pow(max(0.,dot(normalize(lightdir),-dir)),3.);
+		//lower the glow and rays when sun is partially hidden
+		float sun=min(1.1,sunbody+sunrays*(occult+.2)); 
+		sun*=.8+min(.2,occult);
+		col+=suncol*max(sundisc,sun); // make sundisk visible when partial hidden
+	} else { //hit planet
+			col+=suncol*sunrays*occult*.8; // rays over planet, based on hide ammount
+			col+=suncol*sunbody*smoothstep(0.435,1.,length(uv))*20.; //tiny bloom effect
+	}
+	
+	gl_FragColor = vec4(col,1.0);
+}|">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="282" nodename="PlanetSystem (EX9.Effect)" systemname="PlanetSystem (EX9.Effect)" filename="./PlanetSystem.fx" componentmode="Hidden">
+  <BOUNDS type="Node" left="5850" top="3405" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Render State" visible="1">
+  </PIN>
+  <PIN pinname="Mesh" visible="1">
+  </PIN>
+  <PIN pinname="Transform" visible="1">
+  </PIN>
+  <PIN pinname="Technique" visible="1">
+  </PIN>
+  <PIN pinname="Color" visible="1">
+  </PIN>
+  <PIN pinname="Texture" visible="1">
+  </PIN>
+  <PIN pinname="Texture Transform" visible="1">
+  </PIN>
+  <PIN pinname="Alpha" visible="1">
+  </PIN>
+  <PIN pinname="iResolution" visible="1">
+  </PIN>
+  <PIN pinname="iGlobalTime" visible="1">
+  </PIN>
+  <PIN pinname="iMouse" visible="1">
+  </PIN>
+  <PIN pinname="iChannel0" visible="1">
+  </PIN>
+  <PIN pinname="iChannel1" visible="1">
+  </PIN>
+  <PIN pinname="iDate" visible="1">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="402" nodename="ScreenInfo (Windows)" systemname="ScreenInfo (Windows)" componentmode="Hidden">
+  <BOUNDS type="Node" left="6585" top="1785" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="403" nodename="Vector (2d Split)" systemname="Vector (2d Split)" componentmode="Hidden">
+  <BOUNDS type="Node" left="4140" top="8625" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="XY" visible="1">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="404" nodename="Renderer (EX9)" systemname="Renderer (EX9)" componentmode="Hidden">
+  <BOUNDS type="Node" left="3165" top="9045" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Layers" visible="1">
+  </PIN>
+  <PIN pinname="Clear" visible="1">
+  </PIN>
+  <PIN pinname="Background Color" visible="1">
+  </PIN>
+  <PIN pinname="Backbuffer Width" visible="1">
+  </PIN>
+  <PIN pinname="Backbuffer Height" visible="1">
+  </PIN>
+  <PIN pinname="View" visible="1">
+  </PIN>
+  <PIN pinname="Projection" visible="1">
+  </PIN>
+  <PIN pinname="Windowed Depthbuffer Format" visible="0" values="|NONE|">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="408" nodename="IOBox (String)" systemname="IOBox (String)" componentmode="InABox">
+  <BOUNDS type="Box" left="1620" top="75" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="SliceOffset" visible="1">
+  </PIN>
+  <PIN pinname="Input String" visible="1" values="|Raytracing shaders ported from Shadertoy|">
+  </PIN>
+  <PIN pinname="Rows" visible="0" values="|1|">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="410" nodename="GetElement (HTML)" systemname="GetElement (HTML)" componentmode="Hidden">
+  <BOUNDS type="Node" left="1710" top="6330" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Selector" visible="1" values="|body|">
+  </PIN>
+  <PIN pinname="Parent" visible="1">
+  </PIN>
+  <PIN pinname="Refresh" visible="1">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="411" nodename="OnClick (HTML)" systemname="OnClick (HTML)" componentmode="Hidden">
+  <BOUNDS type="Node" left="1710" top="6720" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Element" visible="1">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="412" nodename="Counter (Animation)" systemname="Counter (Animation)" componentmode="Hidden">
+  <BOUNDS type="Node" left="1710" top="7080" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Up" visible="1">
+  </PIN>
+  <PIN pinname="Down" visible="1">
+  </PIN>
+  <PIN pinname="Minimum" visible="1">
+  </PIN>
+  <PIN pinname="Maximum" visible="1">
+  </PIN>
+  <PIN pinname="Increment" visible="1">
+  </PIN>
+  <PIN pinname="Default" visible="1">
+  </PIN>
+  <PIN pinname="Reset" visible="1">
+  </PIN>
+  <PIN pinname="Mode" visible="1" values="|Unlimited|">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="413" nodename="Switch (Node Input)" systemname="Switch (Node Input)" componentmode="Hidden">
+  <BOUNDS type="Node" left="3150" top="7935" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Switch" visible="1">
+  </PIN>
+  <PIN pinname="Input 1" visible="1">
+  </PIN>
+  <PIN pinname="Input 2" visible="1">
+  </PIN>
+  <PIN pinname="Input Count" visible="0" values="|2|">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="414" nodename="IOBox (String)" systemname="IOBox (String)" componentmode="InABox">
+  <BOUNDS type="Box" left="2490" top="405" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="SliceOffset" visible="1">
+  </PIN>
+  <PIN pinname="Input String" visible="1" values="|Yes I know its crazy but they run basicaly out of the box|">
+  </PIN>
+  <PIN pinname="Rows" visible="0" values="|1|">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="415" nodename="IOBox (String)" systemname="IOBox (String)" componentmode="InABox">
+  <BOUNDS type="Box" left="3045" top="750" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="SliceOffset" visible="1">
+  </PIN>
+  <PIN pinname="Input String" visible="1" values="|We just had to change some small variable declarations|">
+  </PIN>
+  <PIN pinname="Rows" visible="0" values="|1|">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="416" nodename="IOBox (String)" systemname="IOBox (String)" componentmode="InABox">
+  <BOUNDS type="Box" left="3810" top="1050" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="SliceOffset" visible="1">
+  </PIN>
+  <PIN pinname="Input String" visible="1" values="|But I can not remember which|">
+  </PIN>
+  <PIN pinname="Rows" visible="0" values="|1|">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="417" nodename="IOBox (String)" systemname="IOBox (String)" componentmode="InABox">
+  <BOUNDS type="Box" left="6075" top="4920" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="SliceOffset" visible="1">
+  </PIN>
+  <PIN pinname="Input String" visible="1" values="|however to create a new WebGL shader|">
+  </PIN>
+  <PIN pinname="Rows" visible="0" values="|1|">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="418" nodename="IOBox (String)" systemname="IOBox (String)" componentmode="InABox">
+  <BOUNDS type="Box" left="6090" top="5385" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="SliceOffset" visible="1">
+  </PIN>
+  <PIN pinname="Input String" visible="1" values="|call up DefineEffect and type the name of your effect in the effect descriptor pin|">
+  </PIN>
+  <PIN pinname="Rows" visible="0" values="|1|">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="420" nodename="IOBox (String)" systemname="IOBox (String)" componentmode="InABox">
+  <BOUNDS type="Box" left="6120" top="5835" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="SliceOffset" visible="1">
+  </PIN>
+  <PIN pinname="Input String" visible="1" values="|After that it will appear in the nodelist as a fx node|">
+  </PIN>
+  <PIN pinname="Rows" visible="0" values="|1|">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="421" nodename="IOBox (String)" systemname="IOBox (String)" componentmode="InABox">
+  <BOUNDS type="Box" left="6105" top="6300" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="SliceOffset" visible="1">
+  </PIN>
+  <PIN pinname="Input String" visible="1" values="|right click DefineEffect to call up the Shader Edit0r |">
+  </PIN>
+  <PIN pinname="Rows" visible="0" values="|1|">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="423" nodename="IOBox (String)" systemname="IOBox (String)" componentmode="InABox">
+  <BOUNDS type="Box" left="6135" top="6780" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="SliceOffset" visible="1">
+  </PIN>
+  <PIN pinname="Input String" visible="1" values="|Now you are from the future too|">
+  </PIN>
+  <PIN pinname="Rows" visible="0" values="|1|">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <LINK srcnodeid="81" srcpinname="Cycles" dstnodeid="87" dstpinname="Input 2">
+  </LINK>
+  <LINK srcnodeid="81" srcpinname="Output" dstnodeid="87" dstpinname="Input 1">
+  </LINK>
+  <LINK srcnodeid="76" srcpinname="Mesh" dstnodeid="91" dstpinname="Mesh">
+  </LINK>
+  <LINK srcnodeid="87" srcpinname="Output" dstnodeid="91" dstpinname="iGlobalTime">
+  </LINK>
+  <LINK srcnodeid="93" srcpinname="Y Output Value" dstnodeid="92" dstpinname="X">
+  </LINK>
+  <LINK srcnodeid="93" srcpinname="Y Output Value" dstnodeid="92" dstpinname="Y">
+  </LINK>
+  <LINK srcnodeid="93" srcpinname="Y Output Value" dstnodeid="92" dstpinname="Z">
+  </LINK>
+  <LINK srcnodeid="92" srcpinname="Transform Out" dstnodeid="91" dstpinname="Transform">
+  </LINK>
+  <LINK srcnodeid="87" srcpinname="Output" dstnodeid="282" dstpinname="iGlobalTime">
+  </LINK>
+  <LINK srcnodeid="76" srcpinname="Mesh" dstnodeid="282" dstpinname="Mesh">
+  </LINK>
+  <LINK srcnodeid="92" srcpinname="Transform Out" dstnodeid="282" dstpinname="Transform">
+  </LINK>
+  <LINK srcnodeid="402" srcpinname="ResolutionXY" dstnodeid="403" dstpinname="XY">
+  </LINK>
+  <LINK srcnodeid="402" srcpinname="ResolutionXY" dstnodeid="282" dstpinname="iResolution">
+  </LINK>
+  <LINK srcnodeid="403" srcpinname="X" dstnodeid="404" dstpinname="Backbuffer Width">
+  </LINK>
+  <LINK srcnodeid="403" srcpinname="Y" dstnodeid="404" dstpinname="Backbuffer Height">
+  </LINK>
+  <LINK srcnodeid="402" srcpinname="ResolutionXY" dstnodeid="91" dstpinname="iResolution">
+  </LINK>
+  <LINK srcnodeid="410" srcpinname="Layers Out" dstnodeid="411" dstpinname="Element">
+  </LINK>
+  <LINK srcnodeid="411" srcpinname="OnEvent" dstnodeid="412" dstpinname="Up">
+  </LINK>
+  <LINK srcnodeid="91" srcpinname="Layer" dstnodeid="413" dstpinname="Input 1">
+  </LINK>
+  <LINK srcnodeid="282" srcpinname="Layer" dstnodeid="413" dstpinname="Input 2">
+  </LINK>
+  <LINK srcnodeid="412" srcpinname="Output" dstnodeid="413" dstpinname="Switch">
+  </LINK>
+  <LINK srcnodeid="413" srcpinname="Output" dstnodeid="404" dstpinname="Layers">
+  </LINK>
+  </PATCH>
