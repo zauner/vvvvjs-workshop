@@ -1,0 +1,39 @@
+
+/*
+ * Best practices for full screen renderer
+ */
+
+body
+{
+	background-color: rgba(255,255,255,1);
+	margin: 0 -3px 0 0; //this fixes a browser bug that creates useless scrollbars
+	font-family: sans-serif;
+        overflow:hidden; //prevent scrollbars
+        height: 100vh;
+	
+
+}
+//create a Selector ID with the same name then the renderer in the patch to reference it in the style sheet
+#RendererMain canvas.vvvv-js-generated-renderer{display:block; position:absolute;z-index:1;pointer-events: none;} 
+//'pointer-events: none' can be used to overlay a renderer with alpha over a webpage and still let clicks come through to underlying elements!
+
+.CanvasDiv
+{
+	position:absolute; 
+	top:0; 
+	left:0;
+	width: 100vw; //100% view width
+	height: 100vh; //100% view height
+        z-index:1
+}
+
+.TextDiv
+{
+	position:absolute; 
+	top:0; 
+	left:0;
+	width: 100vw;
+	height: 100vh;
+        background-color: rgba(255,255,255,0);
+	z-index: -1;
+}

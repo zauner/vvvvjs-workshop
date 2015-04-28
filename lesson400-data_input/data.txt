@@ -1,0 +1,26 @@
+<xml encoding="UTF-8">
+  <folder folders="Folder1">
+    <img Filenames="example11"></img>
+    <img Filenames="example12"></img>
+  </folder>
+  
+  <folder folders="Folder2">
+    <img Filenames="example21"></img>
+    <img Filenames="example22"></img>
+	<img Filenames="example23"></img>
+	<img Filenames="example24"></img>
+	<img Filenames="example25"></img>
+  </folder>
+    <folder folders="Folder3">
+    <img Filenames="example31"></img>
+    <img Filenames="example32"></img>
+  </folder>
+  
+  <folder folders="Folder4">
+    <img Filenames="example41"></img>
+    <img Filenames="example42"></img>
+	<img Filenames="example43"></img>
+	<img Filenames="example44"></img>
+  </folder>
+  
+</xml>

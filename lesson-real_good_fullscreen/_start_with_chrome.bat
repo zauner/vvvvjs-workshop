@@ -1,1 +1,0 @@
-start chrome --disable-web-security --allow-local-file-access %0/../index.html
