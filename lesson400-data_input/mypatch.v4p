@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta28.1.dtd" >
   <PATCH>
-  <BOUNDS type="Window" width="14760" height="22635">
+  <BOUNDS type="Window" width="14265" height="22635">
   </BOUNDS>
   <NODE id="23" nodename="HTTP (Network Get)" systemname="HTTP (Network Get)" componentmode="Hidden">
   <BOUNDS type="Node" left="1200" top="840" width="100" height="100">
@@ -123,7 +123,9 @@
   </PIN>
   <PIN pinname="Layer 2" visible="1">
   </PIN>
-  <PIN pinname="Layer Count" visible="0" values="|2|">
+  <PIN pinname="Layer 3" visible="1">
+  </PIN>
+  <PIN pinname="Layer Count" visible="0" values="|3|">
   </PIN>
   <PIN pinname="Descriptive Name" visible="0" values="||">
   </PIN>
@@ -888,6 +890,100 @@
   <PIN pinname="Descriptive Name" visible="0" values="||">
   </PIN>
   </NODE>
+  <NODE id="207" nodename="GetSlice (Node)" systemname="GetSlice (Node)" componentmode="Hidden">
+  <BOUNDS type="Node" left="4125" top="12555" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Input" visible="1">
+  </PIN>
+  <PIN pinname="BinSize" visible="1">
+  </PIN>
+  <PIN pinname="Index" visible="1">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="208" nodename="Quad (Canvas VVVVjs)" systemname="Quad (Canvas VVVVjs)" componentmode="Hidden">
+  <BOUNDS type="Node" left="11175" top="16125" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Transform" visible="1">
+  </PIN>
+  <PIN pinname="Clipping Layer" visible="1">
+  </PIN>
+  <PIN pinname="Texture" visible="1">
+  </PIN>
+  <PIN pinname="Color" visible="1">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="210" nodename="FileTexture (HTML5 VVVVjs)" systemname="FileTexture (HTML5 VVVVjs)" componentmode="Hidden">
+  <BOUNDS type="Node" left="11265" top="15105" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Filename" visible="1">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="211" nodename="Add (String)" systemname="Add (String)" componentmode="Hidden">
+  <BOUNDS type="Node" left="11190" top="14550" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Intersperse String" visible="1" values="||">
+  </PIN>
+  <PIN pinname="Input 1" visible="1">
+  </PIN>
+  <PIN pinname="Input 2" visible="1">
+  </PIN>
+  <PIN pinname="Input Count" visible="0" values="|2|">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="212" nodename="IOBox (String)" systemname="IOBox (String)" componentmode="InABox">
+  <BOUNDS type="Box" left="11370" top="14025" width="0" height="0">
+  </BOUNDS>
+  <PIN pinname="SliceOffset" visible="1">
+  </PIN>
+  <PIN pinname="Input String" visible="1" values="|textures\|">
+  </PIN>
+  <PIN pinname="Rows" visible="0" values="|1|">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="213" nodename="GetSlice (Node)" systemname="GetSlice (Node)" componentmode="Hidden">
+  <BOUNDS type="Node" left="11475" top="15675" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Input" visible="1">
+  </PIN>
+  <PIN pinname="BinSize" visible="1">
+  </PIN>
+  <PIN pinname="Index" visible="1">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
+  <NODE id="214" nodename="Transform (Transform 2d)" systemname="Transform (Transform 2d)" componentmode="Hidden">
+  <BOUNDS type="Node" left="9795" top="15750" width="100" height="100">
+  </BOUNDS>
+  <PIN pinname="Transform In" visible="1">
+  </PIN>
+  <PIN pinname="TranslateX" visible="1" values="|-0.5|">
+  </PIN>
+  <PIN pinname="TranslateY" visible="1">
+  </PIN>
+  <PIN pinname="ScaleX" visible="1" values="|0.4|">
+  </PIN>
+  <PIN pinname="ScaleY" visible="1" values="|0.4|">
+  </PIN>
+  <PIN pinname="Rotate" visible="1">
+  </PIN>
+  <PIN pinname="CenterX" visible="1">
+  </PIN>
+  <PIN pinname="CenterY" visible="1">
+  </PIN>
+  <PIN pinname="Descriptive Name" visible="0" values="||">
+  </PIN>
+  </NODE>
   <LINK srcnodeid="33" srcpinname="Output String" dstnodeid="23" dstpinname="URL">
   </LINK>
   <LINK srcnodeid="23" srcpinname="Body" dstnodeid="24" dstpinname="XML Input">
@@ -1069,5 +1165,21 @@
   <LINK srcnodeid="201" srcpinname="Output" dstnodeid="200" dstpinname="Input 1">
   </LINK>
   <LINK srcnodeid="200" srcpinname="Output" dstnodeid="94" dstpinname="X">
+  </LINK>
+  <LINK srcnodeid="208" srcpinname="Layer" dstnodeid="41" dstpinname="Layer 3">
+  </LINK>
+  <LINK srcnodeid="26" srcpinname="Output" dstnodeid="211" dstpinname="Input 2">
+  </LINK>
+  <LINK srcnodeid="212" srcpinname="Output String" dstnodeid="211" dstpinname="Input 1">
+  </LINK>
+  <LINK srcnodeid="211" srcpinname="Output" dstnodeid="210" dstpinname="Filename">
+  </LINK>
+  <LINK srcnodeid="210" srcpinname="Texture Out" dstnodeid="213" dstpinname="Input">
+  </LINK>
+  <LINK srcnodeid="213" srcpinname="Output" dstnodeid="208" dstpinname="Texture">
+  </LINK>
+  <LINK srcnodeid="130" srcpinname="Output" dstnodeid="213" dstpinname="Index">
+  </LINK>
+  <LINK srcnodeid="214" srcpinname="Transform Out" dstnodeid="208" dstpinname="Transform">
   </LINK>
   </PATCH>
