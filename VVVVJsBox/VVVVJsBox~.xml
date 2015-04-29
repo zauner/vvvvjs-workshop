@@ -1,0 +1,519 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta32.0.dtd" >
+   <PATCH nodename="C:\Users\Matthias\ownCloud\VVVVJsBox\VVVVJsBox.v4p" systemname="VVVVJsBox" filename="C:\Users\Matthias\ownCloud\VVVVJsBox\VVVVJsBox.v4p">
+   <BOUNDS type="Window" left="7656" top="1032" width="9324" height="10824">
+   </BOUNDS>
+   <PACK Name="addonpack" Version="31.9.0">
+   </PACK>
+   <NODE systemname="HTTP (Network Server)" nodename="HTTP (Network Server)" componentmode="Hidden" id="8">
+   <BOUNDS type="Node" left="1728" top="6312" width="996" height="276">
+   </BOUNDS>
+   <PIN pinname="Port" slicecount="1" values="8090">
+   </PIN>
+   <PIN pinname="URL" visible="1">
+   </PIN>
+   <PIN pinname="Content" visible="1">
+   </PIN>
+   <PIN pinname="MimeType" slicecount="1" visible="1" values="text/plain">
+   </PIN>
+   </NODE>
+   <NODE systemname="Dir (File Advanced)" filename="%VVVV%\addonpack\lib\nodes\plugins\Dir.dll" nodename="Dir (File Advanced)" componentmode="Hidden" id="11">
+   <BOUNDS type="Node" left="1116" top="1512" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Directory" visible="1">
+   </PIN>
+   <PIN pinname="Update" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Include Subdirectories" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Short Filename" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Filenames" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="RegExpr (String)" nodename="RegExpr (String)" componentmode="Hidden" id="13">
+   <BOUNDS type="Node" left="1020" top="2052" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Regular Expression" slicecount="1" values="vvvvjs_app\\(.+)">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Case Sensitive Match" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Match 1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Filenames" dstnodeid="13" dstpinname="Input">
+   </LINK>
+   <NODE systemname="Sift (String)" nodename="Sift (String)" componentmode="Hidden" id="15">
+   <BOUNDS type="Node" left="2004" top="2724" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Filter" slicecount="1" values=".git">
+   </PIN>
+   <PIN pinname="Comparison" slicecount="1" values="ContainsAny">
+   </PIN>
+   <PIN pinname="Hits" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Match 1" dstnodeid="15" dstpinname="Input">
+   </LINK>
+   <NODE systemname="Select (String)" nodename="Select (String)" componentmode="Hidden" id="16">
+   <BOUNDS type="Node" left="1116" top="3744" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="NOT (Boolean)" nodename="NOT (Boolean)" componentmode="Hidden" id="17">
+   <BOUNDS type="Node" left="1740" top="3096" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="15" srcpinname="Hits" dstnodeid="17" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Output" dstnodeid="16" dstpinname="Select">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Match 1" dstnodeid="16" dstpinname="Input">
+   </LINK>
+   <NODE systemname="Substitute (String)" nodename="Substitute (String)" componentmode="Hidden" id="19">
+   <BOUNDS type="Node" left="1068" top="4344" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="From" slicecount="1" values="\">
+   </PIN>
+   <PIN pinname="To" slicecount="1" values="/">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="19" dstpinname="Input">
+   </LINK>
+   <NODE systemname="Reader (Raw)" nodename="Reader (Raw)" componentmode="Hidden" id="20">
+   <BOUNDS type="Node" left="3276" top="3624" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Read" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Content" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="AsString (Raw)" nodename="AsString (Raw)" componentmode="Hidden" id="21">
+   <BOUNDS type="Node" left="3252" top="4224" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="20" srcpinname="Content" dstnodeid="21" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="21" srcpinname="Output" dstnodeid="8" dstpinname="Content">
+   </LINK>
+   <NODE systemname="Add (String)" nodename="Add (String)" componentmode="Hidden" id="23">
+   <BOUNDS type="Node" left="3240" top="3132" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" slicecount="1" values="vvvvjs_app">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="DosPath">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="23" srcpinname="Output" dstnodeid="20" dstpinname="Filename">
+   </LINK>
+   <NODE systemname="Cons (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (String)" componentmode="Hidden" id="24">
+   <BOUNDS type="Node" left="876" top="5088" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="/">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Output" dstnodeid="24" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="24" srcpinname="Output" dstnodeid="8" dstpinname="URL">
+   </LINK>
+   <NODE systemname="Cons (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (String)" componentmode="Hidden" id="25">
+   <BOUNDS type="Node" left="3060" top="2508" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1" slicecount="446" values="vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\albers\albers.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\geo\albers.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\svg\arc.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\area\area.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\svg\area.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\array.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\ascending.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\bar\bar.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\barley.json,vvvvjs_app\vvvv_js\lib\beatdetektor.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\behavior\behavior.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\geo\bounds.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\box\box.css,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\box\box.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\box\box.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\chart\box.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\bubble\bubble.css,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\bubble\bubble.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\bubble\bubble.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\bullet\bullet.css,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\bullet\bullet.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\bullet\bullet.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\chart\bullet.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\bullet\bullets.json,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\button.css,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\calendar\calendar.css,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\calendar\calendar.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\call.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\cartogram\cartogram.css,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\cartogram\cartogram.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\cartogram\cartogram.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\scale\category.js,vvvvjs_app\vvvv_js\CHANGELOG,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\chart\chart.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\chord\chord.css,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\chord\chord.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\layout\chord.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\svg\chord.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\chord\chord.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\choropleth\choropleth.css,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\choropleth\choropleth.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\choropleth\choropleth.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\choropleth\choropleth-area.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\choropleth\choropleth-bounds.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\clock\clock.css,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\clock\clock.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\clock\clock.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\cluster\cluster.css,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\cluster\cluster.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\force\cluster.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\layout\cluster.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\cluster\cluster.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\cluster\cluster-radial.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\cluster\cluster-radial.js,vvvvjs_app\vvvv_js\code_editor.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\collapse.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\colorbrewer\colorbrewer.css,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\colorbrewer\colorbrewer.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\env-js\envjs\console.js,vvvvjs_app\vvvv_js\effects\Constant.vvvvjs.fx,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\contour\contour.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\geom\contour.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\env-js\envjs\platform\core.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\core.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\splom\cross.js,vvvvjs_app\vvvv_js\examples\02_webgl_texturedquads\cross.png,vvvvjs_app\vvvv_js\examples\08_2pass_heightmap\cross.png,vvvvjs_app\vvvv_js\examples\10_waveshaper_test\cross.png,vvvvjs_app\vvvv_js\demo\cross.png,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\env-js\envjs\css.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\csv\csv.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\d3.behavior.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\d3.behavior.min.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\d3.chart.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\d3.chart.min.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\d3.csv.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\d3.csv.min.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\d3.geo.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\d3.geo.min.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\d3.geom.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\d3.geom.min.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\d3.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\d3.layout.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\d3.layout.min.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\d3.min.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\d3.time.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\d3.time.min.js,vvvvjs_app\vvvv_js\lib\d3-v3\d3.v3.js,vvvvjs_app\vvvv_js\lib\d3-v3\d3.v3.min.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\date.js,vvvvjs_app\vvvv_js\examples\08_2pass_heightmap\DeformByHeightMap.fx,vvvvjs_app\vvvv_js\examples\08_2pass_heightmap\DeformByHeightMap.vvvvjs.fx,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\delaunay\delaunay.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\geom\delaunay.js,vvvvjs_app\vvvv_js\demo\demo.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\descending.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\svg\diagonal.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\dispatch.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\calendar\dji.csv,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\zoom\dji.csv,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\calendar\dji.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\calendar\dji.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\env-js\envjs\dom.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\donut\donut.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\dot\dot.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\ease.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\end.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\entries.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\env-js\bin\envjs,vvvvjs_app\vvvv_js\demo\tests\EqTest.v4p,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\event.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\env-js\envjs\event.js,vvvvjs_app\vvvv_js\examples\01_canvas_arcs\example01.v4p,vvvvjs_app\vvvv_js\examples\03_canvas_shadow_text\example01~.xml,vvvvjs_app\vvvv_js\examples\02_webgl_texturedquads\example02.v4p,vvvvjs_app\vvvv_js\examples\02_webgl_texturedquads\example02~.xml,vvvvjs_app\vvvv_js\examples\03_canvas_shadow_text\example03.v4p,vvvvjs_app\vvvv_js\examples\03_canvas_shadow_text\example03~.xml,vvvvjs_app\vvvv_js\examples\04_canvas_cloud\example04.v4p,vvvvjs_app\vvvv_js\examples\04_canvas_cloud\example04~.xml,vvvvjs_app\vvvv_js\examples\05_canvas_cat_viewer\example05.v4p,vvvvjs_app\vvvv_js\examples\05_canvas_cat_viewer\example05~.xml,vvvvjs_app\vvvv_js\examples\06_canvas_video\example06.v4p,vvvvjs_app\vvvv_js\examples\06_canvas_video\example06~.xml,vvvvjs_app\vvvv_js\examples\07_canvas_flowers\example07.v4p,vvvvjs_app\vvvv_js\examples\07_canvas_flowers\example07~.xml,vvvvjs_app\vvvv_js\examples\08_2pass_heightmap\example08.v4p,vvvvjs_app\vvvv_js\examples\08_2pass_heightmap\example08~.xml,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\externs.js,vvvvjs_app\vvvv_js\favicon.ico,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\cluster\flare.json,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\treemap\flare.json,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\tree\flare.json,vvvvjs_app\vvvv_js\lib\d3-v1.14\data\flare.json,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\bubble\flare.json,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\pack\flare.json,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\partition\flare.json,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\splom\flowers.json,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\force\force.css,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\force\force.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\layout\force.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\force\force.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\force\force-dynamic.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\csv\format.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\time\format.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\format.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\functor.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\geo\geo.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\geom\geom.js,vvvvjs_app\vvvv_js\lib\glMatrix-0.9.5.min.js,vvvvjs_app\vvvv_js\effects\GouraudDirectional.vvvvjs.fx,vvvvjs_app\vvvv_js\demo\halo.png,vvvvjs_app\vvvv_js\examples\08_2pass_heightmap\halo.png,vvvvjs_app\vvvv_js\examples\10_waveshaper_test\halo.png,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\hello-world\hello-data.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\hello-world\hello-data-key.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\hello-world\hello-data-nested.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\hello-world\hello-data-nested-key.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\hello-world\hello-event.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\hello-world\hello-node-key.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\hello-world\hello-sort.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\hello-world\hello-transform.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\hello-world\hello-transition.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\hello-world\hello-transition-undefined.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\hello-world\hello-webkit-transition.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\layout\hierarchy.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\horizon\horizon.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\hsl.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\html.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\env-js\envjs\html.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\hull\hull.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\geom\hull.js,vvvvjs_app\index.html,vvvvjs_app\vvvv_js\template\index.html,vvvvjs_app\vvvv_js\examples\05_canvas_cat_viewer\index.html,vvvvjs_app\vvvv_js\examples\07_canvas_flowers\index.html,vvvvjs_app\vvvv_js\demo\index.html,vvvvjs_app\vvvv_js\examples\08_2pass_heightmap\index.html,vvvvjs_app\vvvv_js\examples\01_canvas_arcs\index.html,vvvvjs_app\vvvv_js\examples\index.html,vvvvjs_app\vvvv_js\examples\02_webgl_texturedquads\index.html,vvvvjs_app\vvvv_js\examples\04_canvas_cloud\index.html,vvvvjs_app\vvvv_js\examples\03_canvas_shadow_text\index.html,vvvvjs_app\vvvv_js\examples\10_waveshaper_test\index.html,vvvvjs_app\vvvv_js\examples\06_canvas_video\index.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\uglifyjs\index.js,vvvvjs_app\vvvv_js\inspektor.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\interpolate.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\env-js\envjs\johnson.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\env-js\envjs\platform\johnson.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\env-js\envjs\johnson.rb,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\jquery\jquery.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\jquery\jquery.min.js,vvvvjs_app\vvvv_js\lib\jquery\jquery-1.8.2.min.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\jquery-ui\jquery-ui.css,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\jquery-ui\jquery-ui.min.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\json.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\keys.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\layout\layout.js,vvvvjs_app\vvvv_js\LICENCE,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\env-js\LICENSE,vvvvjs_app\vvvv_js\lib\d3-v3\LICENSE,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\colorbrewer\LICENSE,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\uglifyjs\LICENSE,vvvvjs_app\vvvv_js\lib\d3-v1.14\LICENSE,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\protovis\LICENSE,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\polymaps\LICENSE,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\jit\LICENSE,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\sizzle\LICENSE,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\jquery-ui\LICENSE,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\jquery\LICENSE,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\line\line.css,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\line\line.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\line\line.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\svg\line.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\scale\linear.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\env-js\local_settings.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\scale\log.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\Makefile,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\max.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\mercator\mercator.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\geo\mercator.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\merge.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\min.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\force\miserables.json,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\moire\moire.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\box\morley.csv,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\svg\mouse.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\nest.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\env-js\envjs\platform\node.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\env-js\envjs\node.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\ns.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\object.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\scale\ordinal.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\pack\pack.css,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\pack\pack.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\pack\pack.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\layout\pack.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\uglifyjs\package.json,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\csv\parse.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\uglifyjs\lib\parse-js.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\env-js\envjs\parser.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\layout\partition.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\partition\partition-icicle.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\partition\partition-sunburst.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\partition\partition-sunburst.js,vvvvjs_app\vvvv_js\patch.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\geo\path.js,vvvvjs_app\vvvv_js\examples\08_2pass_heightmap\PhongDirectional.fxh,vvvvjs_app\vvvv_js\effects\PhongDirectional.vvvvjs.fx,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\pie\pie.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\layout\pie.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\pie\pie-transition.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\geom\polygon.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\scale\pow.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\uglifyjs\lib\process.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\qq\qq.css,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\qq\qq.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\qq\qq.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\chart\qq.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\quadtree\quadtree.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\geom\quadtree.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\scale\quantile.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\scale\quantize.js,vvvvjs_app\vvvv_js\examples\08_2pass_heightmap\radial_grad.png,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\range.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\data\README,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\force\README,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\uglifyjs\README.md,vvvvjs_app\vvvv_js\lib\d3-v1.14\README.md,vvvvjs_app\vvvv_js\README.md,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\rebind.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\requote.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\rgb.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\env-js\envjs\platform\rhino.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\env-js\envjs\rhino.js,vvvvjs_app\vvvv_js\demo\rotating_quads.v4p,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\env-js\envjs\rubyracer.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\env-js\envjs\platform\rubyracer.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\env-js\envjs\rubyracer.rb,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\scale\scale.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\hello-world\selectAll-enter-add.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\hello-world\select-enter-add.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\selection.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\sizzle\sizzle.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\sizzle\sizzle.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\sizzle\sizzle.min.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\sort\sort.css,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\sort\sort.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\sort\sort.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\spline\spline.css,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\spline\spline.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\spline\spline.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\split.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\splom\splom.css,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\splom\splom.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\splom\splom.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\env-js\envjs\platform\spydermonkey.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\env-js\envjs\spydermonkey.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\env-js\envjs\spydermonkey.py,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\scale\sqrt.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\uglifyjs\lib\squeeze-more.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\stream\stack.css,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\stream\stack.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\stream\stack.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\layout\stack.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\start.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\qq\stats.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\stream\stream.css,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\stream\stream.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\stream\stream.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\stream\stream_layers.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\svg\svg.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\svg\symbol.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\symbol-map\symbol-map.html,vvvvjs_app\vvvv_js\template\template_patch.v4p,vvvvjs_app\vvvv_js\template\template_patch~.xml,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-append.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-append.out,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-attr.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-attr.out,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-call.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-call.out,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-csv-parse.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-csv-parse.out,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-format.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-format.out,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-insert.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-insert.out,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-interpolate.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-interpolate.out,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-nest.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-nest.out,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-remove.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-remove.out,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-scale-linear.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-scale-linear.out,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-scale-log.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-scale-log.out,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-scale-pow.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-scale-pow.out,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-scale-sqrt.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-scale-sqrt.out,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-svg-arc.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-svg-arc.out,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-svg-area.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-svg-area.out,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-svg-line.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-svg-line.out,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-svg-symbol.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-svg-symbol.out,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-time-format.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-time-format.out,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-time-parse.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-time-parse.out,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-transition.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\tests\test-transition.out,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\text.js,vvvvjs_app\vvvv_js\thirdparty.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\time\time.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\timer.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\transition.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\tree\tree.css,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\tree\tree.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\layout\tree.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\tree\tree.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\treemap\treemap.css,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\treemap\treemap.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\layout\treemap.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\treemap\treemap.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\tree\tree-radial.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\tree\tree-radial.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\qq\turkers.json,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\uglifyjs\bin\uglifyjs,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\jquery-ui\images\ui-bg_diagonals-thick_18_b81900_40x40.png,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\jquery-ui\images\ui-bg_diagonals-thick_20_666666_40x40.png,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\jquery-ui\images\ui-bg_flat_10_000000_40x100.png,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\jquery-ui\images\ui-bg_glass_100_f6f6f6_1x400.png,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\jquery-ui\images\ui-bg_glass_100_fdf5ce_1x400.png,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\jquery-ui\images\ui-bg_glass_65_ffffff_1x400.png,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\jquery-ui\images\ui-bg_gloss-wave_35_f6a828_500x100.png,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\jquery-ui\images\ui-bg_highlight-soft_100_eeeeee_1x100.png,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\jquery-ui\images\ui-bg_highlight-soft_75_ffe45c_1x100.png,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\jquery-ui\images\ui-icons_222222_256x240.png,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\jquery-ui\images\ui-icons_228ef1_256x240.png,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\jquery-ui\images\ui-icons_ef8c08_256x240.png,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\jquery-ui\images\ui-icons_ffd27a_256x240.png,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\jquery-ui\images\ui-icons_ffffff_256x240.png,vvvvjs_app\vvvv_js\lib\underscore\underscore-min.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\choropleth\unemployment.json,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\horizon\unemployment.json,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\choropleth\us-counties.json,vvvvjs_app\vvvv_js\lib\d3-v1.14\data\us-counties.json,vvvvjs_app\vvvv_js\lib\d3-v1.14\data\us-state-centroids.json,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\cartogram\us-states.json,vvvvjs_app\vvvv_js\lib\d3-v1.14\data\us-states.json,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\choropleth\us-states.json,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\values.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\calendar\vix.csv,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\calendar\vix.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\calendar\vix.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\voronoi\voronoi.css,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\voronoi\voronoi.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\voronoi\voronoi.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\geom\voronoi.js,vvvvjs_app\vvvv_js\core\vvvv.core.js,vvvvjs_app\vvvv_js\vvvviewer\vvvv.css,vvvvjs_app\vvvv_js\mainloop\vvvv.dominterface.js,vvvvjs_app\vvvv_js\editors\vvvv.editors.browser_editor.js,vvvvjs_app\vvvv_js\vvvv.js,vvvvjs_app\vvvv_js\mainloop\vvvv.mainloop.js,vvvvjs_app\vvvv_js\vvvv.min.js,vvvvjs_app\vvvv_js\nodes\vvvv.nodes.2d.js,vvvvjs_app\vvvv_js\nodes\vvvv.nodes.3d.js,vvvvjs_app\vvvv_js\nodes\vvvv.nodes.animation.js,vvvvjs_app\vvvv_js\nodes\vvvv.nodes.astronomy.js,vvvvjs_app\vvvv_js\nodes\vvvv.nodes.audio.js,vvvvjs_app\vvvv_js\nodes\vvvv.nodes.boolean.js,vvvvjs_app\vvvv_js\nodes\vvvv.nodes.canvas.js,vvvvjs_app\vvvv_js\nodes\vvvv.nodes.color.js,vvvvjs_app\vvvv_js\nodes\vvvv.nodes.complex.js,vvvvjs_app\vvvv_js\nodes\vvvv.nodes.differential.js,vvvvjs_app\vvvv_js\nodes\vvvv.nodes.enumerations.js,vvvvjs_app\vvvv_js\nodes\vvvv.nodes.html5.js,vvvvjs_app\vvvv_js\nodes\vvvv.nodes.network.js,vvvvjs_app\vvvv_js\nodes\vvvv.nodes.node.js,vvvvjs_app\vvvv_js\nodes\vvvv.nodes.spectral.js,vvvvjs_app\vvvv_js\nodes\vvvv.nodes.spreads.js,vvvvjs_app\vvvv_js\nodes\vvvv.nodes.string.js,vvvvjs_app\vvvv_js\nodes\vvvv.nodes.system.js,vvvvjs_app\vvvv_js\nodes\vvvv.nodes.transform.js,vvvvjs_app\vvvv_js\nodes\vvvv.nodes.value.js,vvvvjs_app\vvvv_js\nodes\vvvv.nodes.vectors.js,vvvvjs_app\vvvv_js\nodes\vvvv.nodes.webgl.js,vvvvjs_app\vvvv_js\nodes\vvvv.nodes.xml.js,vvvvjs_app\vvvv_js\types\vvvv.shared_types.js,vvvvjs_app\vvvv_js\examples\10_waveshaper_test\waveshaper.v4p,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\env-js\envjs\window.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\data\world-countries.json,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\xhr.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\lib\env-js\envjs\xhr.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\core\xml.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\zoom\zoom.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\src\behavior\zoom.js,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\zoom-pan\zoom-pan.html,vvvvjs_app\vvvv_js\lib\d3-v1.14\examples\zoom-pan\zoom-pan-transform.html">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="index.html">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="25" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="25" srcpinname="Output" dstnodeid="23" dstpinname="Input 2">
+   </LINK>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="26">
+   <BOUNDS type="Node" left="5760" top="1692" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5760" top="1692" width="852" height="1020">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1" slicecount="4" values="html,jpg,png,gif">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <NODE systemname="RegExpr (String)" nodename="RegExpr (String)" componentmode="Hidden" id="27">
+   <BOUNDS type="Node" left="1812" top="5196" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Regular Expression" slicecount="1" values="([^\.]+)$">
+   </PIN>
+   <PIN pinname="Match 1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Output" dstnodeid="27" dstpinname="Input">
+   </LINK>
+   <NODE systemname="String2Enum (Enumerations)" nodename="String2Enum (Enumerations)" componentmode="Hidden" id="29">
+   <BOUNDS type="Node" left="3480" top="5748" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="String Value" visible="1">
+   </PIN>
+   <PIN pinname="Enum" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Sift (String)" nodename="Sift (String)" componentmode="Hidden" id="30">
+   <BOUNDS type="Node" left="5568" top="3240" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Comparison" slicecount="1" values="MatchesAny">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Filter" visible="1">
+   </PIN>
+   <PIN pinname="Hits" visible="1">
+   </PIN>
+   <PIN pinname="Filter Index" visible="1">
+   </PIN>
+   <PIN pinname="Found At Position" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="27" srcpinname="Match 1" dstnodeid="30" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="Output String" dstnodeid="30" dstpinname="Filter">
+   </LINK>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="31">
+   <BOUNDS type="Node" left="6804" top="1692" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6804" top="1692" width="852" height="1020">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1" slicecount="4" values="text/html,image/jpeg,image/x-png,image/gif">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="29" srcpinname="Enum" dstnodeid="8" dstpinname="MimeType">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="36" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="3684" top="1080" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3684" top="1080" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="36" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Update">
+   </LINK>
+   <LINK srcnodeid="36" srcpinname="Y Output Value" dstnodeid="20" dstpinname="Read">
+   </LINK>
+   <NODE systemname="Select (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (Value)" componentmode="Hidden" id="38">
+   <BOUNDS type="Node" left="5316" top="4212" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1" slicecount="448" values="0,1,1,1,2,2,2,2,3,3,3,3,3,3,4,4,4,4,5,5,5,6,6,6,6,6,6,6,6,6,7,7,7,7,7,7,8,8,8,8,8,9,9,10,11,11,12,12,12,13,14,14,14,15,15,16,16,16,16,16,16,17,17,17,17,17,18,19,20,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,22,22,22,22,22,22,22,22,23,23,23,24,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,26,26,26,27,27,27,27,27,27,27,27,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,41,42,42,42,42,43,43,44,45,46,47,48,49,50,51,52,53,54,55,56,56,57,57,57,57,57,57,57,57,57,57,57,57,57,57,57,57,57,57,57,57,57,57,57,57,57,57,58,58,58,58,58,58,58,58,58,59,59,59,59,59,60,60,60,60,60,60,60,60,60,60,61,61,61,61,61,61,61,61,62,63,63,64,64,64,64,65,65,66,66,66,66,66,67,67,67,68,68,68,68,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,70,71,71,72,72,72,72,73,73,73,74,74,74,74,75,75,75,75,75,75,75,75,76,76,76,76,76,76,77,77,77,77,77,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,78,79,79,79,79,80,80,80,81,81,81,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,95,95,95,95,95,95,95,95,95,95,95,96,96,96,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,98,98,99,100">
+   </PIN>
+   <PIN pinname="Former Slice" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="30" srcpinname="Hits" dstnodeid="38" dstpinname="Select">
+   </LINK>
+   <NODE systemname="SetSlice (String)" nodename="SetSlice (String)" componentmode="Hidden" id="40">
+   <BOUNDS type="Node" left="5688" top="5280" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Spread" visible="1">
+   </PIN>
+   <PIN pinname="Index" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Select (String)" nodename="Select (String)" componentmode="Hidden" id="41">
+   <BOUNDS type="Node" left="5676" top="4728" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" slicecount="1" values="text/plain">
+   </PIN>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Count (Value)" nodename="Count (Value)" componentmode="Hidden" id="44">
+   <BOUNDS type="Node" left="6108" top="4200" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="30" srcpinname="Hits" dstnodeid="44" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="44" srcpinname="Count" dstnodeid="41" dstpinname="Select">
+   </LINK>
+   <LINK srcnodeid="41" srcpinname="Output" dstnodeid="40" dstpinname="Spread">
+   </LINK>
+   <LINK srcnodeid="38" srcpinname="Former Slice" dstnodeid="40" dstpinname="Index">
+   </LINK>
+   <NODE systemname="GetSlice (String)" nodename="GetSlice (String)" componentmode="Hidden" id="45">
+   <BOUNDS type="Node" left="6816" top="4188" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Index" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="31" srcpinname="Output String" dstnodeid="45" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="45" srcpinname="Output" dstnodeid="40" dstpinname="Input">
+   </LINK>
+   <NODE systemname="Cons (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (String)" componentmode="Hidden" id="47">
+   <BOUNDS type="Node" left="5184" top="5928" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="text/html">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="40" srcpinname="Output" dstnodeid="47" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="47" srcpinname="Output" dstnodeid="29" dstpinname="String Value">
+   </LINK>
+   <LINK srcnodeid="30" srcpinname="Hits" dstnodeid="38" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="30" srcpinname="Filter Index" dstnodeid="45" dstpinname="Index">
+   </LINK>
+   <NODE systemname="Websocket (Network Server)" filename="VVVV.Nodes.WebsocketNetworkServer.dll" nodename="Websocket (Network Server)" componentmode="Hidden" id="48">
+   <BOUNDS type="Node" left="3336" top="8172" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Port" slicecount="1" values="8091">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="DoSend" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="OnData" visible="1">
+   </PIN>
+   <PIN pinname="Clients" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="49">
+   <BOUNDS type="Node" left="2004" top="9408" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2004" top="9408" width="792" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="48" srcpinname="Output" dstnodeid="49" dstpinname="Input String">
+   </LINK>
+   <NODE systemname="Watcher (File)" filename="%VVVV%\addonpack\lib\nodes\plugins\SystemNodes.dll" nodename="Watcher (File)" componentmode="Hidden" id="50">
+   <BOUNDS type="Node" left="4596" top="384" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Path" visible="1">
+   </PIN>
+   <PIN pinname="Include Subdirectories" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Length (String)" nodename="Length (String)" componentmode="Hidden" id="51">
+   <BOUNDS type="Node" left="4584" top="924" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="50" srcpinname="Path" dstnodeid="51" dstpinname="Input">
+   </LINK>
+   <NODE systemname="GT (Value)" nodename="GT (Value)" componentmode="Hidden" id="52">
+   <BOUNDS type="Node" left="4476" top="1452" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="51" srcpinname="Count" dstnodeid="52" dstpinname="Input 1">
+   </LINK>
+   <NODE systemname="OR (Boolean Spectral)" nodename="OR (Boolean Spectral)" componentmode="Hidden" id="53">
+   <BOUNDS type="Node" left="4404" top="1944" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="52" srcpinname="Output" dstnodeid="53" dstpinname="Input">
+   </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="57">
+   <BOUNDS type="Node" left="3336" top="9396" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3336" top="9396" width="792" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="OnData">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="48" srcpinname="OnData" dstnodeid="57" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="59">
+   <BOUNDS type="Node" left="5232" top="9336" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5232" top="9336" width="792" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Connected Clients|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="48" srcpinname="Clients" dstnodeid="59" dstpinname="Input String">
+   </LINK>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="61">
+   <BOUNDS type="Node" left="2448" top="7272" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2448" top="7272" width="792" height="240">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Input">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="61" srcpinname="Output String" dstnodeid="48" dstpinname="Input">
+   </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="62">
+   <BOUNDS type="Node" left="3564" top="7248" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3564" top="7248" width="792" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="DoSend">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="62" srcpinname="Y Output Value" dstnodeid="48" dstpinname="DoSend">
+   </LINK>
+   <NODE systemname="Delay (Animation)" nodename="Delay (Animation)" componentmode="Hidden" id="64">
+   <BOUNDS type="Node" left="4248" top="2904" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Time" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Mode" slicecount="1" values="Point">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="OnOpen (VVVV)" nodename="OnOpen (VVVV)" componentmode="Hidden" id="65">
+   <BOUNDS type="Node" left="4848" top="1968" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Bang" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="66">
+   <BOUNDS type="Node" left="4404" top="2436" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="65" srcpinname="Bang" dstnodeid="66" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="64" srcpinname="Output" dstnodeid="36" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="53" srcpinname="Output" dstnodeid="66" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="66" srcpinname="Output" dstnodeid="64" dstpinname="Input">
+   </LINK>
+   <NODE systemname="SystemFolder (File)" nodename="SystemFolder (File)" componentmode="Hidden" id="67">
+   <BOUNDS type="Node" left="1128" top="420" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Folder" slicecount="1" values="CurrentPatch">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Add (String)" nodename="Add (String)" componentmode="Hidden" id="69">
+   <BOUNDS type="Node" left="1128" top="816" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="DosPath">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="vvvvjs_app">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="67" srcpinname="Output" dstnodeid="69" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="69" srcpinname="Output" dstnodeid="11" dstpinname="Directory">
+   </LINK>
+   <LINK srcnodeid="69" srcpinname="Output" dstnodeid="50" dstpinname="Path">
+   </LINK>
+   </PATCH>
